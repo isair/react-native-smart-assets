@@ -45,12 +45,12 @@ for FILE_PATH in $ASSETS_DIR/*.pdf; do
   FILE_NAME="${FILE%.*}"
 
   ( \
-    $CONVERT_PDF -r216 -sOutputFile="$IMAGE_OUTPUT_DIR"/"$FILE_NAME".png $FILE_PATH ;\
-    $CONVERT_PDF -r432 -sOutputFile="$IMAGE_OUTPUT_DIR"/"$FILE_NAME"@2x.png $FILE_PATH ;\
-    $CONVERT_PDF -r648 -sOutputFile="$IMAGE_OUTPUT_DIR"/"$FILE_NAME"@3x.png $FILE_PATH \
+    $CONVERT_PDF -r216 -sOutputFile="$IMAGE_OUTPUT_DIR/$FILE_NAME".png "$FILE_PATH" ;\
+    $CONVERT_PDF -r432 -sOutputFile="$IMAGE_OUTPUT_DIR/$FILE_NAME"@2x.png "$FILE_PATH" ;\
+    $CONVERT_PDF -r648 -sOutputFile="$IMAGE_OUTPUT_DIR/$FILE_NAME"@3x.png "$FILE_PATH" \
   ) || true
 
-  if [[ $FILE_NAME != "*" ]]; then
+  if [[ "$FILE_NAME" != "*" ]]; then
     # TODO: $PROPERTY_NAME from $FILE_NAME. Converting it to camel case if
     # necessary.
     echo "  $FILE_NAME: require('./img/$FILE_NAME.png')," >> $IMAGE_MODULE
@@ -63,7 +63,7 @@ for FILE_PATH in $ASSETS_DIR/*.{jpg,jpeg,png,gif}; do
 
   cp "$FILE_PATH" "$IMAGE_OUTPUT_DIR/$FILE" 2>/dev/null
 
-  if [[ ($FILE_NAME != "*") && (! $FILE_NAME =~ "@") ]]; then
+  if [[ ("$FILE_NAME" != "*") && (! "$FILE_NAME" =~ "@") ]]; then
     echo "  $FILE_NAME: require('./img/$FILE')," >> $IMAGE_MODULE
   fi
 done
